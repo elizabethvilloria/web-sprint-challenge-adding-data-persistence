@@ -1,5 +1,4 @@
 // build your `/api/resources` router here
-// resources/router.js
 const router = require('express').Router();
 const resourceModel = require('./model.js');
 
