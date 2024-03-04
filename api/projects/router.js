@@ -6,7 +6,12 @@ const projectModel = require('./model.js')
 router.get('/', async (req, res, next) => {
     try {
       const projects = await projectModel.getAllProjects();
-      res.status(200).json(projects);
+      const formattedProjects = projects.map(project => ({
+        project_name: project.project_name,
+        project_description: project.project_description,
+        project_completed: Boolean(project.project_completed) || false, 
+      }));
+      res.status(200).json(formattedProjects);
     } catch (error) {
       next(error);
     }
@@ -28,7 +33,16 @@ router.post('/', async (req, res, next) => {
             project_completed: Boolean(project_completed) || false,
         });
 
-        res.status(201).json(newProject);
+        if (newProject) {
+            res.status(201).json({
+                project_id: newProject.project_id,
+                project_name: newProject.project_name,
+                project_description: newProject.project_description,
+                project_completed: newProject.project_completed === 1 ? true : false,
+            });
+        } else {
+            res.status(500).json({ error: 'Failed to create project' });
+        }
     } catch (error) {
         next(error);
     }
