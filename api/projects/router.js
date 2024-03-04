@@ -40,6 +40,7 @@ router.post('/', async (req, res, next) => {
                 project_description: newProject.project_description,
                 project_completed: newProject.project_completed === 1 ? true : false,
             });
+            
         } else {
             res.status(500).json({ error: 'Failed to create project' });
         }
